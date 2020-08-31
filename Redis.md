@@ -161,3 +161,47 @@ Rdis是c语言编写,官方提供的数据为100000+的QPS,完全不比同样的
 核心:
 
 Redis是将所有的数据全部都放到内存,所以说使用单线程去操作效率就是最高,多线程会有CPU上下文切换,会消耗时间,对于内存系统来说,如果没有上下文切换效率就是最高的!多次读写都是在一个cpu上,就内存情况下,这个就是最佳方案.
+
+
+
+Redis是一个开源（BSD许可），内存存储的数据结构服务器，可用作数据库，高速缓存和消息队列代理。它支持[字符串](https://www.redis.net.cn/tutorial/3508.html)、[哈希表](https://www.redis.net.cn/tutorial/3509.html)、[列表](https://www.redis.net.cn/tutorial/3510.html)、[集合](https://www.redis.net.cn/tutorial/3511.html)、[有序集合](https://www.redis.net.cn/tutorial/3512.html)，[位图](https://www.redis.net.cn/tutorial/3508.html)，[hyperloglogs](https://www.redis.net.cn/tutorial/3513.html)等数据类型。内置复制、[Lua脚本](https://www.redis.net.cn/tutorial/3516.html)、LRU收回、[事务](https://www.redis.net.cn/tutorial/3515.html)以及不同级别磁盘持久化功能，同时通过Redis Sentinel提供高可用，通过Redis Cluster提供自动[分区](https://www.redis.net.cn/tutorial/3524.html)
+
+### Redis-key
+
+#### 1.exists
+
+127.0.0.1:6379> keys *
+1) "name"
+2) "age"
+127.0.0.1:6379> exists age  //判断时候存在此键 
+(integer) 1
+127.0.0.1:6379> 
+
+#### 2.keys *
+
+查看所有key值
+
+#### 3.move  
+
+move key name 1 
+
+#### 4.EXPIRE(设置过期时间)
+
+EXPIRE name 10  //name这个键10 秒过期
+
+### 5.查看当前key的剩余时间
+
+ttl key
+
+### 6.查看key的类型
+
+type key
+
+
+
+### 五大数据类型
+
+> String
+
+
+
