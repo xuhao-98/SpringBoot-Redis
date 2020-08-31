@@ -200,7 +200,61 @@ type key
 
 ### 五大数据类型
 
-> String
+> String、List、Set、Hash、Zset
 
+#### String（字符串）
 
+​	1.append 值后添加字符串
+
+​	2strlen 获取字符串长度
+
+```java
+127.0.0.1:6379> set name xuhao
+OK
+127.0.0.1:6379> app
+(error) ERR unknown command `app`, with args beginning with: 
+127.0.0.1:6379> append name xiaowang
+(integer) 13
+127.0.0.1:6379> get name
+"xuhaoxiaowang"
+127.0.0.1:6379> strlen name
+(integer) 13
+```
+
+3.设置一个初始量进行加减-类似点赞、播放量
+
+```java
+127.0.0.1:6379> set m 0 //设置一个初始值
+OK
+127.0.0.1:6379> incr m //incr 每次加1
+(integer) 1
+127.0.0.1:6379> get m
+"1"
+127.0.0.1:6379> decr m //decr 每次减1
+(integer) 0
+127.0.0.1:6379> get m
+"0"
+```
+
+4.一次增加自定义数值
+
+```java
+127.0.0.1:6379> incrby m 10 //incrby + key + 数字 增长几个
+(integer) 10
+127.0.0.1:6379> get m
+"10"
+127.0.0.1:6379> decrby m 10//decrby +key + 数字 减少几个
+(integer) 0
+127.0.0.1:6379> get m
+"0"
+```
+
+####################################################
+
+5.获取字符串 根据范围
+
+```java
+127.0.0.1:6379> getrange name 0 4 // getrange 键值 开始位置 结束位置
+"hello"
+```
 
