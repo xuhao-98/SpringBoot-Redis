@@ -406,3 +406,56 @@ set中的交集和并集
 4) "f"
 ```
 
+### hash(哈希-map集合)
+
+Map集合---key-<k,v>值是一个map集合
+
+存取值
+
+```yaml
+127.0.0.1:6379> HSET hash name xuhao //存值 key-<k,v>
+(integer) 1
+127.0.0.1:6379> HGET hash name //取值
+"xuhao"
+```
+
+### zset(有序集合)
+
+在set的基础上,增加了一个值,set k1 score1 v1
+
+```bash
+127.0.0.1:6379> zadd set 1 one //添加一个元素 ,并带上标识
+(integer) 1
+127.0.0.1:6379> zadd set 2 two 3 three //添加多元素 
+(integer) 2
+127.0.0.1:6379> ZRANGE set 0 -1
+1) "one"
+2) "two"
+3) "three"
+##################################################################
+排序
+127.0.0.1:6379> zadd s 2000  xx
+(integer) 1
+127.0.0.1:6379> zadd s 1000  yy
+(integer) 1
+127.0.0.1:6379> zadd s 3000  zz
+(integer) 1
+127.0.0.1:6379> ZRANGE s 0 -1
+1) "yy"
+2) "xx"
+3) "zz"
+127.0.0.1:6379> ZRANGEBYSCORE s -inf +inf//默认排序从最小到最大
+1) "yy"
+2) "xx"
+3) "zz"
+127.0.0.1:6379> ZRANGEBYSCORE s -inf +inf withscores
+1) "yy"
+2) "1000"
+3) "xx"
+4) "2000"
+5) "zz"
+6) "3000"
+
+
+```
+
