@@ -1,3 +1,5 @@
+
+
 ## Nosql自述
 
 #### 为什么要用Nosql
@@ -130,7 +132,7 @@ redis-benchmark命令参数:
 
 3.DBSIZE 查看数据库大小
 
-```java
+```yaml
 127.0.0.1:6379> select 3
 OK
 127.0.0.1:6379[3]> DBSIZE
@@ -208,7 +210,7 @@ type key
 
 ​	2strlen 获取字符串长度
 
-```java
+```yaml
 127.0.0.1:6379> set name xuhao
 OK
 127.0.0.1:6379> app
@@ -223,7 +225,7 @@ OK
 
 3.设置一个初始量进行加减-类似点赞、播放量
 
-```java
+```yaml
 127.0.0.1:6379> set m 0 //设置一个初始值
 OK
 127.0.0.1:6379> incr m //incr 每次加1
@@ -238,7 +240,7 @@ OK
 
 4.一次增加自定义数值
 
-```java
+```yaml
 127.0.0.1:6379> incrby m 10 //incrby + key + 数字 增长几个
 (integer) 10
 127.0.0.1:6379> get m
@@ -253,8 +255,127 @@ OK
 
 5.获取字符串 根据范围
 
-```java
+```yaml
 127.0.0.1:6379> getrange name 0 4 // getrange 键值 开始位置 结束位置
 "hello"
+```
+
+### List(基本的数据类型)
+
+在redis里面可以将list玩成栈、队列
+
+所有的list命令都是 l 开头
+
+```yaml
+127.0.0.1:6379> lpush list 1 //将一个值或者多个值插入到列表头部 lpush左
+(integer) 1
+127.0.0.1:6379> lpush list 2
+(integer) 2
+127.0.0.1:6379> lpush list 3
+(integer) 3
+127.0.0.1:6379> lrange list 0 -1 // 获取list中的值
+1) "3"
+2) "2"
+3) "1"
+127.0.0.1:6379> rpush list 0 //将一个值或者多个值插入到列表头部 rpush右
+(integer) 4
+127.0.0.1:6379> lrange list 0 -1
+1) "3"
+2) "2"
+3) "1"
+4) "0"
+127.0.0.1:6379> 
+
+```
+
+移除元素
+
+```yaml
+127.0.0.1:6379> rpop list// 从右边 移除第一个
+"0"
+127.0.0.1:6379> lpop list //从左边移除第一个
+"3"
+127.0.0.1:6379> 
+```
+
+获取list中的某个值 :lindex
+
+```yaml
+127.0.0.1:6379> lindex list 0
+"2"
+127.0.0.1:6379> 
+```
+
+llen :返回list长度
+
+```yaml
+127.0.0.1:6379> lrange list 0 -1
+1) "5"
+2) "4"
+3) "2"
+4) "1"
+5) "0"
+127.0.0.1:6379> llen list
+(integer) 5
+```
+
+移除指定的值:
+
+```yaml
+127.0.0.1:6379> lrem list 1 5 //移除指定的值
+(integer) 1
+127.0.0.1:6379> lrange list 0 -1
+1) "4"
+2) "2"
+3) "1"
+4) "0"
+```
+
+
+
+......
+
+### set(set中的值不能重复)
+
+```yaml
+127.0.0.1:6379> sadd myset hello //set 值
+(integer) 1
+127.0.0.1:6379> sadd myset xuhao
+(integer) 1
+127.0.0.1:6379> smembers myset //查看set中的值
+1) "xuhao"
+2) "hello"
+127.0.0.1:6379> sismember myset hell //判断是否有这个值
+(integer) 0
+
+```
+
+```yaml
+127.0.0.1:6379> scard myset //查看set中元素个数
+(integer) 2
+```
+
+```yaml
+127.0.0.1:6379> sadd myset xxxx
+(integer) 1
+127.0.0.1:6379> srem myset xxxx //移除set中某个元素
+(integer) 1
+127.0.0.1:6379> smembers myset
+1) "xuhao"
+2) "hello"
+
+```
+
+随机(无需不重复)
+
+```yaml
+127.0.0.1:6379> srandmember myset //随机获取元素
+"hello"
+127.0.0.1:6379> srandmember myset
+"hello"
+127.0.0.1:6379> srandmember myset
+"hello"
+127.0.0.1:6379> srandmember myset
+"xuhao"
 ```
 
