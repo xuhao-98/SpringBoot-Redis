@@ -379,3 +379,30 @@ llen :返回list长度
 "xuhao"
 ```
 
+set中的交集和并集
+
+```yaml
+127.0.0.1:6379> sadd set a
+(integer) 1
+127.0.0.1:6379> sadd set b
+(integer) 1
+127.0.0.1:6379> sadd set c
+(integer) 1
+127.0.0.1:6379> sadd set1 b
+(integer) 1
+127.0.0.1:6379> sadd set1 f
+(integer) 1
+127.0.0.1:6379> sadd set1 c
+(integer) 1
+127.0.0.1:6379> SDIFF set set1 //差集
+1) "a"
+127.0.0.1:6379> SINTER set set1 //交集元素
+1) "c"
+2) "b"
+127.0.0.1:6379> SUNION set set1 //并集元素
+1) "a"
+2) "b"
+3) "c"
+4) "f"
+```
+
