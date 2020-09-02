@@ -479,10 +479,96 @@ Map集合---key-<k,v>值是一个map集合
 
 redis的事务:
 
-1.开启事务()
+1.开启事务(multi)
 
-2.命令入队()
+2.命令入队(....)
 
-3.执行事务()
+3.执行事务(exec)
 
-锁:redis可以实现锁
+```bash
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379> set k1 v1
+QUEUED
+127.0.0.1:6379> set k2 v2
+QUEUED
+127.0.0.1:6379> get k1
+QUEUED
+127.0.0.1:6379> set k3 v3
+QUEUED
+127.0.0.1:6379> EXEC
+1) OK
+2) OK
+3) "v1"
+4) OK
+#############################################################
+放弃事务
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379> set m1 n1
+QUEUED
+127.0.0.1:6379> set m2 n2
+QUEUED
+127.0.0.1:6379> set m3 n3
+QUEUED
+127.0.0.1:6379> DISCARD
+OK
+127.0.0.1:6379> get m1
+(nil)
+################################################################
+编译型异常,事务不会被执行
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379> set k1 k2
+QUEUED
+127.0.0.1:6379> set k2 k2
+QUEUED
+127.0.0.1:6379> set k3 k3
+QUEUED
+127.0.0.1:6379> get bc
+QUEUED
+127.0.0.1:6379> getset b //错误命令
+(error) ERR wrong number of arguments for 'getset' command
+127.0.0.1:6379> get k3
+QUEUED
+127.0.0.1:6379> EXEC
+(error) EXECABORT Transaction discarded because of previous errors.
+127.0.0.1:6379> get k3
+(nil)
+运行异常(1/0)
+127.0.0.1:6379> set k1 "v1"
+OK
+127.0.0.1:6379> multi
+OK
+127.0.0.1:6379> incr k1
+QUEUED
+127.0.0.1:6379> set k2 v2
+QUEUED
+127.0.0.1:6379> set k3 v3
+QUEUED
+127.0.0.1:6379> get k3
+QUEUED
+127.0.0.1:6379> EXEC
+1) (error) ERR value is not an integer or out of range
+2) OK
+3) OK
+4) "v3"
+
+```
+
+> 监控 watch
+
+#### 悲观锁:
+
+​	很悲观,认为时候都会出问题,无论做什么都会加锁!
+
+#### 乐观锁:
+
+​	很乐观,认为什么时候都不会出问题,所以不会上锁!更新数据的时候会判断一下,是否有人修改数据
+
+1.获取version
+
+2.更新的时候比较
+
+
+
