@@ -11,6 +11,4 @@
     <modules>
         <module>springboot-jedis</module>
     </modules>
-
-
 </project>

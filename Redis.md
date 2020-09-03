@@ -632,3 +632,5 @@ public static void main(String[] args) {
     System.out.println("清除所有的数据库: " + jedis.flushAll());
 }
 ```
+
+### springboot整合
