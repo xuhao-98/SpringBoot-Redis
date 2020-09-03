@@ -634,3 +634,80 @@ public static void main(String[] args) {
 ```
 
 ### springboot整合
+
+说明:在springboot2.x之后,原来使用的jedis被lettuce替换?
+
+jedis:才用直连,多线程操作的话,是不安全的,如果想要避免不安全的,使用jedis pool连接池,更像BIO模式.
+
+lettuce:采用netty,实例可以在多个线程中共享,不存在线程不安全的情况,可以减少线程数据,更像NIO.
+
+1.导入依赖
+
+```bash
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-configuration-processor</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+</dependencies>
+```
+
+2.配置连接
+
+```yaml
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 4
+```
+
+3.测试连接
+
+```bash
+@SpringBootTest
+class SpringcloudRedisApplicationTests {
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Test
+    void contextLoads() {
+        //opsForValue()操作字符串
+        redisTemplate.opsForValue().set("name","xuhao");
+        System.out.println(redisTemplate.opsForValue().get("name"));
+
+        //通过获取连接操作
+//        RedisConnection connection = redisTemplate.getConnectionFactory().getConnection();
+//        connection.flushDb();
+    }
+
+}
+```
